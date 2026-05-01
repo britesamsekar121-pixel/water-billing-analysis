@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Dashboard</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+    background: linear-gradient(135deg, #1d2671, #c33764);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Container */
+.card-box {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* Title */
+h2 {
+    text-align: center;
+    font-weight: bold;
+    color: #1d2671;
+}
+
+/* Table */
+table {
+    margin-top: 20px;
+}
+
+table thead {
+    background: #1d2671;
+    color: white;
+}
+
+table tbody tr:hover {
+    background: #f1f5ff;
+}
+
+/* Buttons */
+.btn-custom {
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 14px;
+}
+
+/* Search Box */
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<div class="card-box">
+
+<h2>💧 Admin Dashboard</h2>
+
+<!-- SEARCH -->
+<form method="GET" class="search-box">
+    <input name="q" class="form-control" placeholder="Search by name or ID">
+    
+    <select name="month" class="form-control">
+        <option value="">All Months</option>
+        <option>Jan</option><option>Feb</option><option>Mar</option>
+        <option>Apr</option><option>May</option><option>Jun</option>
+        <option>Jul</option><option>Aug</option><option>Sep</option>
+        <option>Oct</option><option>Nov</option><option>Dec</option>
+    </select>
+
+    <button class="btn btn-primary">Filter</button>
+</form>
+
+<!-- TABLE -->
+<table class="table table-bordered table-hover text-center">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Area</th>
+<th>Liters</th>
+<th>Units</th>
+<th>Bill</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody>
+{% for d in data %}
+<tr>
+<td>{{ d.customer_id }}</td>
+<td>{{ d.customer_name }}</td>
+<td>{{ d.area }}</td>
+<td>{{ d.water_used_liters }}</td>
+<td>{{ d.units }}</td>
+<td>₹{{ d.bill_amount }}</td>
+<td>
+    {% if d.payment_status == "Paid" %}
+        <span class="badge bg-success">Paid</span>
+    {% else %}
+        <span class="badge bg-warning text-dark">Pending</span>
+    {% endif %}
+</td>
+
+<td>
+    <a href="/bill/{{ d.customer_id }}/" class="btn btn-primary btn-custom">PDF</a>
+    <a href="/edit/{{ d.customer_id }}/" class="btn btn-warning btn-custom">Edit</a>
+    <a href="/delete/{{ d.customer_id }}/" class="btn btn-danger btn-custom">Delete</a>
+</td>
+
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+
+</div>
+</div>
+
+</body>
+</html>

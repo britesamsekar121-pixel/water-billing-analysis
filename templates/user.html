@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>User Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    font-family: 'Segoe UI', sans-serif;
+    color: #333;
+}
+
+/* Glass Card Effect */
+.card-box {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin-top: 40px;
+}
+
+/* Title */
+h2 {
+    text-align: center;
+    font-weight: bold;
+    color: #4a00e0;
+    margin-bottom: 20px;
+}
+
+/* User Info */
+.info-box {
+    display: flex;
+    justify-content: space-between;
+    background: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+.btn-custom {
+    border-radius: 25px;
+    padding: 8px 18px;
+    font-weight: bold;
+}
+
+/* Hover effects */
+.btn-success:hover {
+    background: #157347;
+}
+
+.btn-primary:hover {
+    background: #0b5ed7;
+}
+
+/* Chart */
+canvas {
+    margin-top: 25px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<div class="card-box">
+
+<h2>💧 Water Usage Dashboard</h2>
+
+<!-- USER DETAILS -->
+{% for d in data %}
+<div class="info-box">
+    <span><b>Name:</b> {{ d.customer_name }}</span>
+    <span><b>Area:</b> {{ d.area }}</span>
+</div>
+{% endfor %}
+
+<hr>
+
+<!-- GRAPH -->
+<canvas id="chart"></canvas>
+
+<hr>
+
+<!-- PAYMENT -->
+<div class="text-center">
+
+<p><b>Status:</b> {{ data.0.payment_status }}</p>
+
+{% if data.0.payment_status == "Pending" %}
+    <a href="/pay/{{ data.0.customer_id }}/"
+   class="btn btn-success btn-custom"
+   onclick="return confirmPayment({{ data.0.bill_amount }})">
+    💳 Pay Now
+</a>
+{% else %}
+    <button class="btn btn-secondary btn-custom" disabled>✔ Paid</button>
+{% endif %}
+
+<br><br>
+
+<a href="/bill/{{ data.0.customer_id }}/" class="btn btn-primary btn-custom">
+    📄 Download Bill
+</a>
+
+</div>
+
+</div>
+</div>
+
+<!-- GRAPH SCRIPT -->
+<script>
+new Chart(document.getElementById("chart"), {
+    type: "bar",
+    data: {
+        labels: {{ months|safe }},
+        datasets: [{
+            label: "Water Usage (Liters)",
+            data: {{ usage|safe }},
+            backgroundColor: [
+                "#4facfe", "#00f2fe", "#43e97b",
+                "#38f9d7", "#fa709a", "#fee140"
+            ],
+            borderRadius: 8
+        }]
+    },
+    options: {
+        plugins: {
+            legend: { display: true }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+<script>
+function confirmPayment(amount) {
+    return confirm(
+        "💳 Payment Confirmation\n\n" +
+        "Amount: ₹" + amount + "\n\n" +
+        "Do you want to proceed?"
+    );
+}
+</script>
+</body>
+</html>
