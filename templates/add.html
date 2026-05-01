@@ -11,9 +11,9 @@
 <form method="POST">
 {% csrf_token %}
 
-<input class="form-control mb-2" name="cid" placeholder="ID">
-<input class="form-control mb-2" name="name" placeholder="Name">
-<input class="form-control mb-2" name="area" placeholder="Area">
+<input name="customer_id" required class="form-control">
+<input name="customer_name" required class="form-control">
+<input name="area" required class="form-control">
 <select name="month" class="form-control mb-2">
 <option value="Jan">Jan</option>
 <option value="Feb">Feb</option>
@@ -30,9 +30,6 @@
 </select>
 <input class="form-control mb-2" name="year" placeholder="Year (e.g. 2025)">
 <input class="form-control mb-2" name="liters" placeholder="Water used (liters)">
-<input name="customer_id" required class="form-control">
-<input name="customer_name" required class="form-control">
-<input name="area" required class="form-control">
 
 <button class="btn btn-primary">Add</button>
 
