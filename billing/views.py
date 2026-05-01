@@ -101,12 +101,7 @@ from django.http import HttpResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
-
-from django.http import HttpResponse
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
-from reportlab.lib import colors
-from datetime import datetime   # ✅ moved to top (best practice)
+from datetime import datetime
 
 def download_bill(request, cid):
     d = collection.find_one({"customer_id": str(cid)})
