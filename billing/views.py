@@ -57,7 +57,11 @@ def add_customer(request):
             bill = units * 3
         else:
             bill = units * 5
-
+        if not cid or not name or not area:
+            return render(request, "add.html", {
+                "error": "All fields are required!"
+            })
+        
         collection.insert_one({
             "customer_id": str(cid),
             "customer_name": name,
