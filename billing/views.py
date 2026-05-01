@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from pymongo import MongoClient
 
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb+srv://britesamsekar:Brite%4012@cluster0.sjxgiqy.mongodb.net/")
 db = client["water_billing"]
 collection = db["customers"]
 
